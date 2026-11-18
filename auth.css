@@ -1,0 +1,232 @@
+/* ============ МОДАЛЬНОЕ ОКНО «ВХОД / РЕГИСТРАЦИЯ» ============ */
+/* Подключать ПОСЛЕ style.css: <link rel="stylesheet" href="auth.css"> */
+
+/* --- Оверлей --- */
+.auth-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(31, 42, 54, 0.55);
+  display: none;              /* открывается классом .open */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+.auth-overlay.open { display: flex; }
+
+/* --- Окно --- */
+.auth-modal {
+  background: #FFFFFF;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(31, 42, 54, 0.35);
+  animation: auth-in .18s ease-out;
+}
+@keyframes auth-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.auth-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 8px;
+  background: #F4F6F8;
+  color: #1F2A36;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.auth-close:hover { background: #E1E6EB; }
+
+/* --- Вкладки --- */
+.auth-tabs {
+  display: flex;
+  gap: 4px;
+  background: #F4F6F8;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 20px;
+}
+.auth-tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #5A6572;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.auth-tab.active {
+  background: #FFFFFF;
+  color: #1F2A36;
+  box-shadow: 0 1px 3px rgba(31, 42, 54, 0.15);
+}
+
+/* --- Панели форм --- */
+.auth-panel { display: none; }
+.auth-panel.active { display: block; }
+.auth-panel h3 { font-size: 20px; margin-bottom: 4px; }
+.auth-sub { font-size: 13px; color: #8B98A5; margin-bottom: 16px; }
+
+/* --- Поля (в стиле .form-field из style.css) --- */
+.auth-field { margin-bottom: 14px; }
+.auth-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.auth-field input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid #D6DDE4;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  color: #1F2A36;
+  background: #FFFFFF;
+}
+.auth-field input:focus {
+  outline: none;
+  border-color: #C4622D;
+  box-shadow: 0 0 0 3px rgba(196, 98, 45, 0.15);
+}
+.auth-field.invalid input { border-color: #C0392B; }
+
+/* Появление поля «Город» только у роли «исполнитель» */
+.auth-field.hidden { display: none; }
+
+/* --- Роль: заказчик / исполнитель --- */
+.auth-role {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.auth-role input { position: absolute; opacity: 0; pointer-events: none; }
+.auth-role label {
+  border: 1.5px solid #D6DDE4;
+  border-radius: 8px;
+  padding: 10px 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5A6572;
+  cursor: pointer;
+  transition: border-color .2s, background .2s, color .2s;
+}
+.auth-role input:checked + label {
+  border-color: #C4622D;
+  background: #FDF3EC;
+  color: #C4622D;
+}
+
+/* --- Чекбоксы --- */
+.auth-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.auth-check input { margin-top: 3px; flex-shrink: 0; accent-color: #C4622D; }
+.auth-check label { font-size: 13px; color: #5A6572; line-height: 1.45; }
+.auth-check.invalid label { color: #C0392B; }
+
+/* --- Ошибки и подсказки --- */
+.auth-error {
+  display: none;
+  background: #FDECEA;
+  border: 1px solid #E74C3C;
+  color: #C0392B;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+}
+.auth-error.show { display: block; }
+
+/* --- Кнопки окна --- */
+.auth-submit { width: 100%; }
+.auth-alt {
+  text-align: center;
+  font-size: 13px;
+  color: #5A6572;
+  margin: 14px 0 0;
+}
+.auth-alt a { color: #C4622D; font-weight: 600; cursor: pointer; }
+.auth-alt a:hover { text-decoration: underline; }
+
+/* --- Блок «пользователь вошёл» в шапке --- */
+.user-chip {
+  display: none;              /* показывается классом .logged-in */
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1F2A36;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.user-chip:hover { background: #E7EBEF; }
+.user-chip .avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #C4622D;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+.site-header.logged-in .link-login { display: none; }
+.site-header.logged-in .user-chip { display: flex; }
+
+/* --- Тост-уведомления --- */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1F2A36;
+  color: #FFFFFF;
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(31, 42, 54, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 1100;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px);
+}
+.toast.success { background: #1E7A46; }
+.toast.error { background: #C0392B; }
+
+/* --- Фокус с клавиатуры --- */
+.auth-modal :focus-visible,
+.user-chip:focus-visible,
+.auth-close:focus-visible {
+  outline: 2px solid #C4622D;
+  outline-offset: 2px;
+}
+
+/* --- Смартфоны --- */
+@media (max-width: 680px) {
+  .auth-overlay { padding: 12px; }
+  .auth-modal { padding: 22px 18px; }
+}
