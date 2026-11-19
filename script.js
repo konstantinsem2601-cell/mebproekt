@@ -26,7 +26,6 @@ async function hashPassword(password, salt) {
       return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
     } catch (e) { /* fallback ниже */ }
   }
-  // Запасной вариант для file:// (когда crypto.subtle недоступен)
   let h1 = 0x811c9dc5, h2 = 0x1000193;
   for (let i = 0; i < data.length; i++) {
     h1 = (h1 ^ data.charCodeAt(i)) * 16777619 >>> 0;
@@ -169,29 +168,41 @@ function currentUser() {
 }
 function updateAuthUI() {
   const user = currentUser();
-  const chip = document.createElement('button');
-  chip.className = 'user-chip';
-  chip.textContent = user ? user.name + ' · выйти' : '';
-  chip.title = 'Нажмите, чтобы выйти';
-
   const desktop = $('#link-login');
   const mobile = $('#mobile-login');
 
   if (user) {
-    chip.addEventListener('click', () => {
+    if (!desktop.classList.contains('user-chip')) {
+      const chip = document.createElement('button');
+      chip.className = 'user-chip';
+      chip.id = 'link-login';
+      chip.title = 'Нажмите, чтобы выйти';
+      chip.textContent = user.name + ' · выйти';
+      chip.addEventListener('click', () => {
+        sessionStorage.removeItem(SESSION_KEY);
+        updateAuthUI();
+        toast('Вы вышли из аккаунта.');
+      });
+      desktop.replaceWith(chip);
+    } else {
+      desktop.textContent = user.name + ' · выйти';
+    }
+    mobile.textContent = 'Выйти';
+    mobile.removeAttribute('data-auth');
+    mobile.onclick = (e) => {
+      e.preventDefault();
       sessionStorage.removeItem(SESSION_KEY);
       updateAuthUI();
       toast('Вы вышли из аккаунта.');
-    });
-    desktop.replaceWith(chip); chip.id = 'link-login'; chip.removeAttribute('style');
-    mobile.textContent = 'Выйти';
-    mobile.removeAttribute('data-auth');
-    mobile.onclick = (e) => { e.preventDefault(); sessionStorage.removeItem(SESSION_KEY); updateAuthUI(); toast('Вы вышли из аккаунта.'); };
+    };
   } else {
     if (desktop.classList.contains('user-chip')) {
       const link = document.createElement('a');
-      link.href = '#'; link.className = 'link-login'; link.id = 'link-login';
-      link.textContent = 'Войти'; link.dataset.auth = 'login';
+      link.href = '#';
+      link.className = 'link-login';
+      link.id = 'link-login';
+      link.textContent = 'Войти';
+      link.dataset.auth = 'login';
       link.addEventListener('click', (e) => { e.preventDefault(); openAuth('login'); });
       desktop.replaceWith(link);
     }
@@ -240,7 +251,6 @@ $('#order-form').addEventListener('submit', (e) => {
     hardware: $('#of-hardware').value.trim(),
     notes: $('#of-notes').value.trim(),
     createdAt: new Date().toISOString()
-    // Здесь позже добавим fetch('/api/orders', ...) для отправки на сервер
   });
   writeList(ORDERS_KEY, orders);
   e.target.reset();
