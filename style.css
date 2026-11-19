@@ -280,17 +280,7 @@ a { text-decoration: none; color: inherit; }
 .input-file-hidden {
   display: none;
 }
-/* Шапка: «Войти» и «Заказать проект» на оранжевом фоне */
-.link-login {
-  background: #C4622D;
-  color: #FFFFFF;
-  padding: 9px 18px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: background .2s;
-}
-.link-login:hover { background: #A85122; color: #FFFFFF; }
-
+/* Шапка: «Заказать проект» на оранжевом фоне */
 .btn-header {
   background: #C4622D;
   color: #FFFFFF;
