@@ -1,411 +1,271 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>МебПроект — готовые проекты мебели с полным пакетом чертежей</title>
-  <meta name="description" content="Готовые проекты мебели с чертежами для раскроя, картами присадки, спецификацией фурнитуры и сметой материала. Заказ проекта по эскизу.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="auth.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Готовые проекты мебели с полным пакетом чертежей: раскрой, присадка, спецификация, смета.">
+<title>МебПроект — готовые проекты мебели с полным пакетом чертежей</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="auth.css">
 </head>
 <body>
 
-  <!-- HEADER SECTION -->
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="#" class="logo" aria-label="МебПроект — на главную">
-        <span class="logo-icon"><span class="ic-m">М</span><span class="ic-p">П</span></span>
-        <span class="logo-text"><span class="lt-dark">Меб</span><span class="lt-accent">Проект</span></span>
-      </a>
-
-      <nav class="main-nav" aria-label="Основная навигация">
-        <a href="#catalog">Каталог</a>
-        <a href="#how">Как это работает</a>
-        <a href="#sketch">Заказ по эскизу</a>
-        <a href="#executors">Исполнителям</a>
-        <a href="#reviews">Отзывы</a>
-      </nav>
-
-      <div class="header-actions">
-        <a href="#" class="link-login js-auth-link" data-auth="login">Войти</a>
-        <a href="#sketch" class="btn btn-primary btn-header">Заказать проект</a>
-        <button type="button" class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
+<!-- ШАПКА -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon"><span class="ic-m">М</span><span class="ic-p">П</span></div>
+      <div class="logo-text"><span class="lt-dark">Меб</span><span class="lt-accent">Проект</span></div>
     </div>
-
-    <nav class="mobile-menu" id="mobileMenu" aria-label="Мобильная навигация">
+    <nav class="main-nav">
       <a href="#catalog">Каталог</a>
       <a href="#how">Как это работает</a>
       <a href="#sketch">Заказ по эскизу</a>
       <a href="#executors">Исполнителям</a>
       <a href="#reviews">Отзывы</a>
-      <a href="#" class="js-auth-link" data-auth="login">Войти</a>
-      <a href="#sketch" class="btn btn-primary">Заказать проект</a>
     </nav>
-  </header>
-  <!-- END HEADER SECTION -->
-
-  <main>
-    <!-- MAIN SECTION -->
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-text">
-          <h1>Готовые проекты мебели с <span class="accent">полным пакетом чертежей</span></h1>
-          <p class="hero-sub">Чертежи для раскроя, карты присадки, спецификации фурнитуры и смета материала. Берите проект и производите — или закажите свой по эскизу.</p>
-          <div class="hero-cta">
-            <a href="#catalog" class="btn btn-primary">Смотреть каталог</a>
-            <a href="#sketch" class="btn btn-outline-light">Заказать по эскизу</a>
-          </div>
-          <div class="hero-stats">
-            <div class="stat"><span class="num">240<span class="accent">+</span></span><span class="lbl">готовых проектов</span></div>
-            <div class="stat"><span class="num">64</span><span class="lbl">исполнителя</span></div>
-            <div class="stat"><span class="num">4.9</span><span class="lbl">средний рейтинг</span></div>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <img src="https://picsum.photos/seed/mebproekt-hero/900/700" alt="Современная кухня из ЛДСП по готовому проекту" width="900" height="700" loading="eager">
-        </div>
-      </div>
-    </section>
-
-    <!-- КАТАЛОГ -->
-    <section class="section" id="catalog">
-      <div class="container">
-        <div class="section-head">
-          <h2>Каталог <span class="accent">проектов</span></h2>
-          <p>Каждый проект — это готовый комплект документов для производства: раскрой, присадка, спецификация, смета и инструкция по сборке.</p>
-        </div>
-
-        <div class="catalog-grid">
-          <article class="card">
-            <div class="card-visual">
-              <img src="https://picsum.photos/seed/mebproekt-kuhnya/800/533" alt="Кухня «Прямая 3.0» из ЛДСП 16 мм" width="800" height="533" loading="lazy">
-            </div>
-            <div class="card-body">
-              <span class="card-tag">Кухня</span>
-              <h3>Кухня «Прямая 3.0»</h3>
-              <p>ЛДСП 16 мм, столешница 38 мм. Чертежи раскроя, карты присадки, смета.</p>
-              <div class="card-price">4 900 ₽</div>
-              <button type="button" class="btn btn-dark js-buy" data-product="Кухня «Прямая 3.0»">Купить</button>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-visual">
-              <img src="https://picsum.photos/seed/mebproekt-shkaf/800/533" alt="Шкаф-купе «Модуль 2.4» с профильными дверями" width="800" height="533" loading="lazy">
-            </div>
-            <div class="card-body">
-              <span class="card-tag">Шкаф</span>
-              <h3>Шкаф-купе «Модуль 2.4»</h3>
-              <p>ЛДСП 16 мм, профильные двери. Полный пакет чертежей и спецификация.</p>
-              <div class="card-price">3 200 ₽</div>
-              <button type="button" class="btn btn-dark js-buy" data-product="Шкаф-купе «Модуль 2.4»">Купить</button>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-visual">
-              <img src="https://picsum.photos/seed/mebproekt-prihozhaya/800/533" alt="Прихожая «Компакт» с МДФ фасадами" width="800" height="533" loading="lazy">
-            </div>
-            <div class="card-body">
-              <span class="card-tag">Прихожая</span>
-              <h3>Прихожая «Компакт»</h3>
-              <p>МДФ фасады, ЛДСП корпус. Карты присадки и инструкция по сборке.</p>
-              <div class="card-price">2 700 ₽</div>
-              <button type="button" class="btn btn-dark js-buy" data-product="Прихожая «Компакт»">Купить</button>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- КАК ЭТО РАБОТАЕТ -->
-    <section class="section section-gray" id="how">
-      <div class="container">
-        <div class="section-head">
-          <h2>Как это <span class="accent">работает</span></h2>
-        </div>
-        <div class="steps-grid">
-          <div class="step">
-            <div class="step-num">1</div>
-            <h3>Выберите проект</h3>
-            <p>Найдите готовое решение в каталоге — от кухни до стеллажа.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">2</div>
-            <h3>Оплатите пакет</h3>
-            <p>Мгновенная оплата картой или по счёту для организаций.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">3</div>
-            <h3>Скачайте документы</h3>
-            <p>Чертежи для раскроя и присадки, смета и спецификация — сразу после оплаты.</p>
-          </div>
-          <div class="step">
-            <div class="step-num">4</div>
-            <h3>Производите</h3>
-            <p>Передайте файлы в цех или соберите своими руками по инструкции.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ЗАКАЗ ПО ЭСКИЗУ -->
-    <section class="section" id="sketch">
-      <div class="container order-wrap">
-        <div class="order-info">
-          <div class="section-head">
-            <h2>Заказ проекта <span class="accent">по эскизу</span></h2>
-            <p>Пришлите эскиз и параметры — мы подготовим полный пакет документов для производства.</p>
-          </div>
-          <ul class="order-list">
-            <li>Материал: ЛДСП, МДФ, ДВФ, стекло</li>
-            <li>Кромка: ПВХ, АЛ, без кромки</li>
-            <li>Фурнитура: направляющие, петли, подъёмники</li>
-            <li>Дополнительные требования: габариты, цвет, наполнение</li>
-          </ul>
-        </div>
-
-        <form class="order-form" id="orderForm" novalidate>
-          <div class="form-row">
-            <div class="form-field">
-              <label for="orderName">Ваше имя</label>
-              <input type="text" id="orderName" name="name" autocomplete="name" required>
-            </div>
-            <div class="form-field">
-              <label for="orderPhone">Телефон</label>
-              <input type="tel" id="orderPhone" name="phone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-field">
-              <label for="orderMaterial">Материал</label>
-              <select id="orderMaterial" name="material">
-                <option value="ldsp">ЛДСП</option>
-                <option value="mdf">МДФ</option>
-                <option value="dvf">ДВФ</option>
-                <option value="glass">Стекло</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="orderEdge">Кромка</label>
-              <select id="orderEdge" name="edge">
-                <option value="pvx">ПВХ</option>
-                <option value="al">АЛ</option>
-                <option value="none">Без кромки</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-field">
-            <label for="orderHardware">Фурнитура</label>
-            <input type="text" id="orderHardware" name="hardware" placeholder="Например: направляющие Blum, петли с доводчиком">
-          </div>
-          <div class="form-field">
-            <label for="orderNotes">Дополнительные требования</label>
-            <textarea id="orderNotes" name="notes" placeholder="Габариты, цвет, наполнение"></textarea>
-          </div>
-          <div class="form-field">
-            <label class="file-field" for="orderFile">
-              <input type="file" id="orderFile" name="sketch" class="input-file-hidden" accept="image/*,.pdf">
-              <span class="file-field-text">Прикрепить эскиз (фото или чертёж)</span>
-            </label>
-          </div>
-          <div class="form-field checkbox-field">
-            <input type="checkbox" id="orderConsent" name="consent" required>
-            <label for="orderConsent">Согласен с <a href="#" class="link-underline">политикой обработки персональных данных</a> и даю согласие на их обработку</label>
-          </div>
-          <button type="submit" class="btn btn-primary">Отправить заказ</button>
-          <div class="form-success" id="orderSuccess" hidden>Заявка сохранена! Мы свяжемся с вами по указанному телефону.</div>
-        </form>
-      </div>
-    </section>
-
-    <!-- ИСПОЛНИТЕЛЯМ -->
-    <section class="section exec" id="executors">
-      <div class="container exec-inner">
-        <div class="exec-text">
-          <h2>Работайте с нами <span class="accent">как исполнитель</span></h2>
-          <p>Зарегистрируйтесь, пройдите модерацию и выбирайте проекты заказчиков в своём городе.</p>
-          <ul class="exec-list">
-            <li>Бесплатная регистрация и проверка модератором</li>
-            <li>Лента доступных заказов с параметрами и эскизами</li>
-            <li>Прямая связь с заказчиком без посредников</li>
-          </ul>
-          <button type="button" class="btn btn-primary" data-auth="register">Стать исполнителем</button>
-        </div>
-        <div class="exec-mock">
-          <div class="exec-mock-title">Лента доступных проектов</div>
-          <div class="exec-mock-item">
-            <div><div class="name">Кухня 3.2 × 2.6 м</div><div class="meta">Ижевск · ЛДСП · срочно</div></div>
-            <div class="price">от 25 000 ₽</div>
-          </div>
-          <div class="exec-mock-item">
-            <div><div class="name">Шкаф в нишу 2.1 × 2.4 м</div><div class="meta">Завьялово · МДФ · сроки 2 недели</div></div>
-            <div class="price">от 18 000 ₽</div>
-          </div>
-          <div class="exec-mock-item">
-            <div><div class="name">Стеллаж в гостиную</div><div class="meta">Воткинск · ЛДСП + стекло</div></div>
-            <div class="price">от 12 000 ₽</div>
-          </div>
-          <div class="exec-mock-item">
-            <div><div class="name">Прихожая по эскизу</div><div class="meta">Глазов · МДФ фасады</div></div>
-            <div class="price">от 20 000 ₽</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ОТЗЫВЫ -->
-    <section class="section" id="reviews">
-      <div class="container">
-        <div class="section-head">
-          <h2>Что говорят <span class="accent">наши клиенты</span></h2>
-        </div>
-        <div class="reviews-grid">
-          <div class="review">
-            <p>«Взяли чертежи кухни, распилили за день по раскрою — всё сошлось до миллиметра. Присадка без сюрпризов.»</p>
-            <div class="review-author">
-              <div class="review-avatar">С</div>
-              <div><div class="name">Сергей</div><div class="role">Цех, Ижевск</div></div>
-            </div>
-          </div>
-          <div class="review">
-            <p>«Клиенту нужен был шкаф нестандартный — взяли проект и адаптировали под его проём. Смета и спецификация сэкономили пару дней.»</p>
-            <div class="review-author">
-              <div class="review-avatar">А</div>
-              <div><div class="name">Анна</div><div class="role">Мебельное ателье</div></div>
-            </div>
-          </div>
-          <div class="review">
-            <p>«Собрал прихожую сам по инструкции. Все отверстия по карте присадки — ни одной переделки.»</p>
-            <div class="review-author">
-              <div class="review-avatar">Д</div>
-              <div><div class="name">Дмитрий</div><div class="role">Частный заказчик</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="section cta">
-      <div class="container">
-        <h2>Не нашли готовый проект?</h2>
-        <p>Пришлите эскиз — подготовим комплект чертежей под ваш материал, кромку и фурнитуру.</p>
-        <a href="#sketch" class="btn btn-primary">Заказать по эскизу</a>
-      </div>
-    </section>
-    <!-- END MAIN SECTION -->
-  </main>
-
-  <!-- FOOTER SECTION -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <div class="logo" aria-label="МебПроект">
-            <span class="logo-text"><span class="lt-dark">Меб</span><span class="lt-accent">Проект</span></span>
-          </div>
-          <p>Готовые проекты мебели с полным пакетом чертежей: раскрой, присадка, спецификация, смета и инструкция по сборке.</p>
-        </div>
-        <div>
-          <h4>Разделы</h4>
-          <a href="#catalog">Каталог</a>
-          <a href="#how">Как это работает</a>
-          <a href="#sketch">Заказ по эскизу</a>
-          <a href="#executors">Исполнителям</a>
-        </div>
-        <div>
-          <h4>Контакты</h4>
-          <a href="tel:+79000000000">+7 (900) 000-00-00</a>
-          <a href="mailto:info@example.ru">info@example.ru</a>
-          <a href="#" aria-disabled="true">Ижевск, Удмуртская Республика</a>
-        </div>
-      </div>
-      <div class="footer-bottom">© 2026 МебПроект. Все права защищены.</div>
-    </div>
-  </footer>
-  <!-- END FOOTER SECTION -->
-
-  <!-- МОДАЛЬНОЕ ОКНО: ВХОД / РЕГИСТРАЦИЯ -->
-  <div class="auth-overlay" id="authOverlay" hidden>
-    <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
-      <button type="button" class="auth-close" id="authClose" aria-label="Закрыть">&times;</button>
-
-      <div class="auth-tabs" role="tablist">
-        <button type="button" class="auth-tab is-active" data-tab="login" role="tab" aria-selected="true">Вход</button>
-        <button type="button" class="auth-tab" data-tab="register" role="tab" aria-selected="false">Регистрация</button>
-      </div>
-
-      <form class="auth-form" id="loginForm" novalidate>
-        <h3 id="authModalTitle">Вход в личный кабинет</h3>
-        <div class="auth-error" id="loginError" hidden></div>
-        <div class="form-field">
-          <label for="loginEmail">Email</label>
-          <input type="email" id="loginEmail" autocomplete="email" required>
-        </div>
-        <div class="form-field">
-          <label for="loginPassword">Пароль</label>
-          <input type="password" id="loginPassword" autocomplete="current-password" required>
-        </div>
-        <button type="submit" class="btn btn-primary auth-submit">Войти</button>
-        <p class="form-note">Нет аккаунта? <a href="#" class="auth-switch" data-tab="register">Зарегистрируйтесь</a></p>
-      </form>
-
-      <form class="auth-form" id="registerForm" hidden novalidate>
-        <h3>Регистрация</h3>
-        <div class="auth-error" id="registerError" hidden></div>
-        <div class="form-field">
-          <label for="regRole">Я хочу</label>
-          <select id="regRole">
-            <option value="customer">Заказывать проекты</option>
-            <option value="executor">Выполнять заказы как исполнитель</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label for="regName">Имя</label>
-          <input type="text" id="regName" autocomplete="name" required>
-        </div>
-        <div class="form-field">
-          <label for="regEmail">Email</label>
-          <input type="email" id="regEmail" autocomplete="email" required>
-        </div>
-        <div class="form-field">
-          <label for="regPhone">Телефон</label>
-          <input type="tel" id="regPhone" autocomplete="tel" placeholder="+7 (___) ___-__-__" required>
-        </div>
-        <div class="form-field field-city" id="regCityField" hidden>
-          <label for="regCity">Город (для исполнителя)</label>
-          <input type="text" id="regCity" placeholder="Например: Ижевск">
-        </div>
-        <div class="form-row">
-          <div class="form-field">
-            <label for="regPassword">Пароль</label>
-            <input type="password" id="regPassword" autocomplete="new-password" minlength="6" required>
-          </div>
-          <div class="form-field">
-            <label for="regPassword2">Повтор пароля</label>
-            <input type="password" id="regPassword2" autocomplete="new-password" required>
-          </div>
-        </div>
-        <div class="form-field checkbox-field">
-          <input type="checkbox" id="regConsent" required>
-          <label for="regConsent">Согласен с <a href="#" class="link-underline">политикой обработки персональных данных</a> и даю согласие на их обработку</label>
-        </div>
-        <button type="submit" class="btn btn-primary auth-submit">Зарегистрироваться</button>
-        <p class="form-note">Уже есть аккаунт? <a href="#" class="auth-switch" data-tab="login">Войдите</a></p>
-      </form>
+    <div class="header-actions">
+      <a href="#" class="link-login" data-auth="login" id="link-login">Войти</a>
+      <a href="#sketch" class="btn btn-dark btn-header">Заказать проект</a>
+      <button class="burger" id="burger" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
+  <nav class="mobile-menu" id="mobile-menu">
+    <a href="#catalog">Каталог</a>
+    <a href="#how">Как это работает</a>
+    <a href="#sketch">Заказ по эскизу</a>
+    <a href="#executors">Исполнителям</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#" class="btn btn-outline" data-auth="login" id="mobile-login">Войти</a>
+  </nav>
+</header>
 
-  <div class="toast" id="toast" hidden></div>
+<main>
+<!-- ГЛАВНЫЙ ЭКРАН -->
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-visual">Изображение проекта</div>
+    <div class="hero-text">
+      <h1>Готовые проекты мебели с полным пакетом <span class="accent">чертежей</span></h1>
+      <p class="hero-sub">Чертежи для раскроя, карты присадки, спецификации фурнитуры и смета материала. Берите проект и производите — или закажите свой по эскизу.</p>
+      <div class="hero-cta">
+        <a href="#catalog" class="btn btn-primary">Смотреть каталог</a>
+        <a href="#sketch" class="btn btn-outline-light btn-outline">Заказать по эскизу</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">240<span class="accent">+</span></div><div class="lbl">готовых проектов</div></div>
+        <div class="stat"><div class="num">64</div><div class="lbl">исполнителя</div></div>
+        <div class="stat"><div class="num">4.9</div><div class="lbl">средний рейтинг</div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <script src="script.js" defer></script>
+<!-- КАТАЛОГ -->
+<section class="section" id="catalog">
+  <div class="container">
+    <div class="section-head">
+      <h2>Каталог проектов</h2>
+      <p>Каждый проект — это готовый комплект документов для производства: раскрой, присадка, спецификация, смета и инструкция по сборке.</p>
+    </div>
+    <div class="catalog-grid">
+      <div class="card">
+        <div class="card-visual"><img src="https://picsum.photos/seed/kuhnya3/600/380" alt="Кухня «Прямая 3.0»" loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-tag">Кухня</span>
+          <h3>Кухня «Прямая 3.0»</h3>
+          <p>ЛДСП 16 мм, столешница 38 мм. Чертежи раскроя, карты присадки, смета.</p>
+          <div class="card-price">4 900 ₽</div>
+          <button class="btn btn-primary" data-product="kuhnya-3-0">Купить</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-visual"><img src="https://picsum.photos/seed/shkaf24/600/380" alt="Шкаф-купе «Модуль 2.4»" loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-tag">Шкаф</span>
+          <h3>Шкаф-купе «Модуль 2.4»</h3>
+          <p>ЛДСП 16 мм, профильные двери. Полный пакет чертежей и спецификация.</p>
+          <div class="card-price">3 200 ₽</div>
+          <button class="btn btn-primary" data-product="shkaf-2-4">Купить</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-visual"><img src="https://picsum.photos/seed/prihozaya/600/380" alt="Прихожая «Компакт»" loading="lazy"></div>
+        <div class="card-body">
+          <span class="card-tag">Прихожая</span>
+          <h3>Прихожая «Компакт»</h3>
+          <p>МДФ фасады, ЛДСП корпус. Карты присадки и инструкция по сборке.</p>
+          <div class="card-price">2 700 ₽</div>
+          <button class="btn btn-primary" data-product="prihozaya-kompakt">Купить</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КАК ЭТО РАБОТАЕТ -->
+<section class="section section-gray" id="how">
+  <div class="container">
+    <div class="section-head"><h2>Как это работает</h2></div>
+    <div class="steps-grid">
+      <div class="step"><div class="step-num">1</div><h3>Выберите проект</h3><p>Найдите готовое решение в каталоге — от кухни до стеллажа.</p></div>
+      <div class="step"><div class="step-num">2</div><h3>Оплатите пакет</h3><p>Мгновенная оплата картой или по счёту для организаций.</p></div>
+      <div class="step"><div class="step-num">3</div><h3>Скачайте документы</h3><p>Чертежи для раскроя и присадки, смета и спецификация — сразу после оплаты.</p></div>
+      <div class="step"><div class="step-num">4</div><h3>Производите</h3><p>Передайте файлы в цех или соберите своими руками по инструкции.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ЗАКАЗ ПО ЭСКИЗУ -->
+<section class="section" id="sketch">
+  <div class="container order-wrap">
+    <div class="order-info">
+      <h2>Заказ проекта по эскизу</h2>
+      <p>Пришлите эскиз и параметры — мы подготовим полный пакет документов для производства.</p>
+      <ul>
+        <li>Материал: ЛДСП, МДФ, ДВФ, стекло</li>
+        <li>Кромка: ПВХ, АЛ, без кромки</li>
+        <li>Фурнитура: направляющие, петли, подъёмники</li>
+        <li>Дополнительные требования: габариты, цвет, наполнение</li>
+      </ul>
+    </div>
+    <form class="order-form" id="order-form" novalidate>
+      <div class="form-row">
+        <div class="form-field"><label for="of-name">Ваше имя</label><input id="of-name" name="name" type="text" required></div>
+        <div class="form-field"><label for="of-phone">Телефон</label><input id="of-phone" name="phone" type="tel" required></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label for="of-material">Материал</label>
+          <select id="of-material" name="material"><option>ЛДСП</option><option>МДФ</option><option>ДВФ</option><option>Стекло</option></select>
+        </div>
+        <div class="form-field"><label for="of-edge">Кромка</label>
+          <select id="of-edge" name="edge"><option>ПВХ</option><option>АЛ</option><option>Без кромки</option></select>
+        </div>
+      </div>
+      <div class="form-field"><label for="of-hardware">Фурнитура</label><input id="of-hardware" name="hardware" type="text"></div>
+      <div class="form-field"><label for="of-notes">Дополнительные требования</label><textarea id="of-notes" name="notes"></textarea></div>
+      <div class="form-field">
+        <label class="file-field" for="of-file">Прикрепить эскиз (фото или чертёж)<span id="file-name"></span></label>
+        <input type="file" id="of-file" class="input-file-hidden" accept="image/*,.pdf">
+      </div>
+      <div class="form-field checkbox-field">
+        <label><input type="checkbox" id="of-consent" required> Согласен на обработку персональных данных</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Отправить заказ</button>
+      <p class="form-success" id="order-success" hidden>Заявка отправлена! Мы свяжемся с вами по указанному телефону.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ИСПОЛНИТЕЛЯМ -->
+<section class="section exec" id="executors">
+  <div class="container exec-inner">
+    <div class="exec-text">
+      <h2>Работайте с нами как <span class="accent">исполнитель</span></h2>
+      <p>Зарегистрируйтесь, пройдите модерацию и выбирайте проекты заказчиков в своём городе.</p>
+      <ul class="exec-list">
+        <li>Бесплатная регистрация и проверка модератором</li>
+        <li>Лента доступных заказов с параметрами и эскизами</li>
+        <li>Прямая связь с заказчиком без посредников</li>
+      </ul>
+      <button class="btn btn-primary" data-auth="register">Стать исполнителем</button>
+    </div>
+    <div class="exec-mock">
+      <div class="exec-mock-title">Лента доступных проектов</div>
+      <div class="exec-mock-item"><div><div class="name">Кухня 3.2 × 2.6 м</div><div class="meta">Ижевск · ЛДСП · срочно</div></div><div class="price">от 25 000 ₽</div></div>
+      <div class="exec-mock-item"><div><div class="name">Шкаф в нишу 2.1 × 2.4 м</div><div class="meta">Завьялово · МДФ · сроки 2 недели</div></div><div class="price">от 18 000 ₽</div></div>
+      <div class="exec-mock-item"><div><div class="name">Стеллаж в гостиную</div><div class="meta">Воткинск · ЛДСП + стекло</div></div><div class="price">от 12 000 ₽</div></div>
+      <div class="exec-mock-item"><div><div class="name">Прихожая по эскизу</div><div class="meta">Глазов · МДФ фасады</div></div><div class="price">от 20 000 ₽</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ОТЗЫВЫ -->
+<section class="section" id="reviews">
+  <div class="container">
+    <div class="section-head"><h2>Что говорят наши клиенты</h2></div>
+    <div class="reviews-grid">
+      <div class="review"><p>«Взяли чертежи кухни, распилили за день по раскрою — всё сошлось до миллиметра. Присадка без сюрпризов.»</p><div class="review-author"><div class="review-avatar">С</div><div><div class="name">Сергей</div><div class="role">Цех, Ижевск</div></div></div></div>
+      <div class="review"><p>«Клиенту нужен был шкаф нестандартный — взяли проект и адаптировали под его проём. Смета и спецификация сэкономили пару дней.»</p><div class="review-author"><div class="review-avatar">А</div><div><div class="name">Анна</div><div class="role">Мебельное ателье</div></div></div></div>
+      <div class="review"><p>«Собрал прихожую сам по инструкции. Все отверстия по карте присадки — ни одной переделки.»</p><div class="review-author"><div class="review-avatar">Д</div><div><div class="name">Дмитрий</div><div class="role">Частный заказчик</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section cta">
+  <div class="container">
+    <h2>Не нашли готовый проект?</h2>
+    <p>Пришлите эскиз — подготовим комплект чертежей под ваш материал, кромку и фурнитуру.</p>
+    <a href="#sketch" class="btn btn-dark">Заказать по эскизу</a>
+  </div>
+</section>
+</main>
+
+<!-- ПОДВАЛ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo"><div class="logo-icon"><span class="ic-m">М</span><span class="ic-p">П</span></div><div class="logo-text"><span class="lt-dark">Меб</span><span class="lt-accent">Проект</span></div></div>
+        <p>Готовые проекты мебели с полным пакетом чертежей: раскрой, присадка, спецификация, смета и инструкция по сборке.</p>
+      </div>
+      <div>
+        <h4>Разделы</h4>
+        <a href="#catalog">Каталог</a><a href="#how">Как это работает</a><a href="#sketch">Заказ по эскизу</a><a href="#executors">Исполнителям</a>
+      </div>
+      <div>
+        <h4>Контакты</h4>
+        <a href="tel:+79000000000">+7 (900) 000-00-00</a>
+        <a href="mailto:info@example.ru">info@example.ru</a>
+        <a href="#">Ижевск, Удмуртская Республика</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 МебПроект. Все права защищены.</div>
+  </div>
+</footer>
+
+<!-- МОДАЛЬНОЕ ОКНО ВХОДА / РЕГИСТРАЦИИ -->
+<div class="auth-overlay" id="auth-overlay" hidden>
+  <div class="auth-modal" role="dialog" aria-modal="true">
+    <button class="auth-close" id="auth-close" aria-label="Закрыть">✕</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Вход</button>
+      <button class="auth-tab" data-tab="register">Регистрация</button>
+    </div>
+
+    <form class="auth-form active" id="form-login" novalidate>
+      <div class="form-field"><label for="li-email">Email</label><input id="li-email" type="email" required></div>
+      <div class="form-field"><label for="li-pass">Пароль</label><input id="li-pass" type="password" required minlength="6"></div>
+      <p class="auth-error" id="li-error" hidden></p>
+      <button type="submit" class="btn btn-primary">Войти</button>
+    </form>
+
+    <form class="auth-form" id="form-register" novalidate>
+      <div class="form-field"><label for="rg-role">Кто вы</label>
+        <select id="rg-role"><option value="customer">Заказчик — ищу проекты и исполнителей</option><option value="executor">Исполнитель — делаю мебель на заказ</option></select>
+      </div>
+      <div class="form-field"><label for="rg-name">Имя</label><input id="rg-name" type="text" required></div>
+      <div class="form-field"><label for="rg-email">Email</label><input id="rg-email" type="email" required></div>
+      <div class="form-field"><label for="rg-phone">Телефон</label><input id="rg-phone" type="tel" required></div>
+      <div class="form-field" id="rg-city-field" hidden><label for="rg-city">Город</label><input id="rg-city" type="text" placeholder="Например, Ижевск"></div>
+      <div class="form-row">
+        <div class="form-field"><label for="rg-pass">Пароль</label><input id="rg-pass" type="password" required minlength="6"></div>
+        <div class="form-field"><label for="rg-pass2">Повторите пароль</label><input id="rg-pass2" type="password" required minlength="6"></div>
+      </div>
+      <div class="form-field checkbox-field">
+        <label><input type="checkbox" id="rg-consent" required> Согласен на обработку персональных данных</label>
+      </div>
+      <p class="auth-error" id="rg-error" hidden></p>
+      <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="script.js" defer></script>
 </body>
 </html>
