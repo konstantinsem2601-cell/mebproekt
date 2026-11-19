@@ -1,244 +1,252 @@
 'use strict';
 
-/* ================== Мобильное меню ================== */
-const burger = document.getElementById('burgerBtn');
-const mobileMenu = document.getElementById('mobileMenu');
-if (burger && mobileMenu) {
-  burger.addEventListener('click', () => {
-    const open = mobileMenu.classList.toggle('open');
-    burger.setAttribute('aria-expanded', String(open));
-  });
-  mobileMenu.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => mobileMenu.classList.remove('open'))
-  );
-}
-
-/* ================== Хранилище (демо-вариант на localStorage) ==================
-   В реальном проекте данные должны жить на сервере: база данных, API,
-   хэширование паролей на сервере (bcrypt/argon2), подтверждение email. */
+// ===== Вспомогательные =====
+const $ = (s) => document.querySelector(s);
 const USERS_KEY = 'mebproekt_users';
 const SESSION_KEY = 'mebproekt_session';
 const ORDERS_KEY = 'mebproekt_orders';
 
-const getUsers = () => {
-  try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; }
-  catch { return []; }
-};
-const saveUsers = users => localStorage.setItem(USERS_KEY, JSON.stringify(users));
-const currentEmail = () => sessionStorage.getItem(SESSION_KEY);
-const getCurrentUser = () => {
-  const email = currentEmail();
-  return email ? getUsers().find(u => u.email === email) || null : null;
-};
+const readList = (key) => { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } };
+const writeList = (key, list) => localStorage.setItem(key, JSON.stringify(list));
 
-const makeSalt = () =>
-  Array.from(crypto.getRandomValues(new Uint8Array(16)), b => b.toString(16).padStart(2, '0')).join('');
+function toast(text) {
+  const t = $('#toast');
+  t.textContent = text;
+  t.hidden = false;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.hidden = true; }, 3200);
+}
 
+// ===== Хэширование пароля: SHA-256 + соль =====
 async function hashPassword(password, salt) {
-  const data = new TextEncoder().encode(salt + password);
+  const data = salt + ':' + password;
   if (window.crypto && crypto.subtle) {
-    const buf = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(buf), b => b.toString(16).padStart(2, '0')).join('');
+    try {
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch (e) { /* fallback ниже */ }
   }
-  // Запасной вариант, если нет crypto.subtle (например, открытие файла локально)
-  let h = 0x811c9dc5;
-  for (const b of data) { h ^= b; h = Math.imul(h, 0x01000193) >>> 0; }
-  return 'fnv1a-' + h.toString(16);
+  // Запасной вариант для file:// (когда crypto.subtle недоступен)
+  let h1 = 0x811c9dc5, h2 = 0x1000193;
+  for (let i = 0; i < data.length; i++) {
+    h1 = (h1 ^ data.charCodeAt(i)) * 16777619 >>> 0;
+    h2 = (h2 + data.charCodeAt(i) * (i + 7)) >>> 0;
+  }
+  return 'f' + h1.toString(16) + h2.toString(16);
+}
+function makeSalt() {
+  const a = new Uint8Array(8);
+  (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i) => a[i] = Math.floor(Math.random() * 256));
+  return [...a].map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-/* ================== Модальное окно ================== */
-const overlay = document.getElementById('authOverlay');
-const tabs = overlay ? Array.from(overlay.querySelectorAll('.auth-tab')) : [];
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
+// ===== Мобильное меню =====
+$('#burger').addEventListener('click', () => $('#mobile-menu').classList.toggle('open'));
+document.querySelectorAll('#mobile-menu a').forEach(a =>
+  a.addEventListener('click', () => $('#mobile-menu').classList.remove('open')));
 
-function switchTab(name) {
-  tabs.forEach(t => {
-    const active = t.dataset.tab === name;
-    t.classList.toggle('is-active', active);
-    t.setAttribute('aria-selected', String(active));
-  });
-  loginForm.hidden = name !== 'login';
-  registerForm.hidden = name !== 'register';
-  document.getElementById('loginError').hidden = true;
-  document.getElementById('registerError').hidden = true;
-}
-
-function openAuth(tab) {
+// ===== Модальное окно =====
+const overlay = $('#auth-overlay');
+function openAuth(mode) {
   overlay.hidden = false;
   document.body.style.overflow = 'hidden';
-  switchTab(tab);
-  (tab === 'login' ? document.getElementById('loginEmail') : document.getElementById('regName')).focus();
+  switchTab(mode === 'register' ? 'register' : 'login');
 }
 function closeAuth() {
   overlay.hidden = true;
   document.body.style.overflow = '';
-  loginForm.reset();
-  registerForm.reset();
-  document.getElementById('loginError').hidden = true;
-  document.getElementById('registerError').hidden = true;
+  ['#li-error', '#rg-error'].forEach(s => { $(s).hidden = true; });
+}
+function switchTab(name) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  $('#form-login').classList.toggle('active', name === 'login');
+  $('#form-register').classList.toggle('active', name === 'register');
 }
 
-overlay.addEventListener('click', e => { if (e.target === overlay) closeAuth(); });
-document.getElementById('authClose').addEventListener('click', closeAuth);
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && !overlay.hidden) closeAuth(); });
+document.querySelectorAll('[data-auth]').forEach(el =>
+  el.addEventListener('click', (e) => { e.preventDefault(); openAuth(el.dataset.auth); }));
 
-tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
-overlay.querySelectorAll('.auth-switch').forEach(a =>
-  a.addEventListener('click', e => { e.preventDefault(); switchTab(a.dataset.tab); })
-);
+$('#auth-close').addEventListener('click', closeAuth);
+overlay.addEventListener('click', (e) => { if (e.target === overlay) closeAuth(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAuth(); });
+document.querySelectorAll('.auth-tab').forEach(t =>
+  t.addEventListener('click', () => switchTab(t.dataset.tab)));
 
-/* ================== Ошибки и уведомления ================== */
-function showFormError(form, message) {
-  const box = form.querySelector('.auth-error');
-  box.textContent = message;
-  box.hidden = false;
-}
-let toastTimer;
-function showToast(message) {
-  const toast = document.getElementById('toast');
-  toast.textContent = message;
-  toast.hidden = false;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { toast.hidden = true; }, 3500);
-}
-
-/* ================== Шапка: вошёл пользователь или нет ================== */
-function applySession() {
-  const user = getCurrentUser();
-  document.querySelectorAll('.js-auth-link').forEach(link => {
-    if (user) {
-      link.textContent = user.name + ' · выйти';
-      link.removeAttribute('data-auth');
-      link.dataset.logout = '1';
-    } else {
-      link.textContent = 'Войти';
-      link.setAttribute('data-auth', 'login');
-      delete link.dataset.logout;
-    }
-  });
-}
-
-/* ================== Валидация ================== */
-const isEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
-const isPhone = v => v.replace(/\D/g, '').length >= 10;
-
-/* ================== Регистрация ================== */
-const regRole = document.getElementById('regRole');
-const regCityField = document.getElementById('regCityField');
-regRole.addEventListener('change', () => {
-  regCityField.hidden = regRole.value !== 'executor';
-  document.getElementById('regCity').required = regRole.value === 'executor';
+// Поле «Город» — только для исполнителя
+$('#rg-role').addEventListener('change', (e) => {
+  $('#rg-city-field').hidden = e.target.value !== 'executor';
 });
 
-registerForm.addEventListener('submit', async e => {
+// ===== Регистрация =====
+$('#form-register').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim().toLowerCase();
-  const phone = document.getElementById('regPhone').value.trim();
-  const city = document.getElementById('regCity').value.trim();
-  const pass = document.getElementById('regPassword').value;
-  const pass2 = document.getElementById('regPassword2').value;
-  const consent = document.getElementById('regConsent').checked;
+  const err = $('#rg-error');
+  const show = (msg, linkToLogin = false) => {
+    err.hidden = false;
+    err.innerHTML = msg + (linkToLogin ? ' <button class="error-link" id="to-login">Войти</button>' : '');
+    if (linkToLogin) $('#to-login').addEventListener('click', () => {
+      switchTab('login');
+      $('#li-email').value = $('#rg-email').value.trim();
+    });
+  };
+  err.hidden = true;
 
-  if (name.length < 2) return showFormError(registerForm, 'Укажите имя (минимум 2 символа).');
-  if (!isEmail(email)) return showFormError(registerForm, 'Введите корректный email.');
-  if (!isPhone(phone)) return showFormError(registerForm, 'Введите корректный телефон.');
-  if (regRole.value === 'executor' && city.length < 2) return showFormError(registerForm, 'Укажите город — он нужен для ленты заказов.');
-  if (pass.length < 6) return showFormError(registerForm, 'Пароль должен быть не короче 6 символов.');
-  if (pass !== pass2) return showFormError(registerForm, 'Пароли не совпадают.');
-  if (!consent) return showFormError(registerForm, 'Нужно согласие на обработку персональных данных.');
+  const name = $('#rg-name').value.trim();
+  const email = $('#rg-email').value.trim().toLowerCase();
+  const phone = $('#rg-phone').value.trim();
+  const role = $('#rg-role').value;
+  const city = $('#rg-city').value.trim();
+  const pass = $('#rg-pass').value;
+  const pass2 = $('#rg-pass2').value;
 
-  const users = getUsers();
-  if (users.some(u => u.email === email)) return showFormError(registerForm, 'Пользователь с таким email уже зарегистрирован. Войдите.');
+  if (!name || !email || !phone) return show('Заполните имя, email и телефон.');
+  if (!/^\S+@\S+\.\S+$/.test(email)) return show('Проверьте формат email.');
+  if (pass.length < 6) return show('Пароль должен быть не короче 6 символов.');
+  if (pass !== pass2) return show('Пароли не совпадают.');
+  if (!$('#rg-consent').checked) return show('Нужно согласие на обработку персональных данных.');
+
+  const users = readList(USERS_KEY);
+  if (users.some(u => u.email === email)) {
+    return show('Пользователь с таким email уже есть.', true);
+  }
 
   const salt = makeSalt();
-  users.push({
-    name, email, phone,
-    role: regRole.value,
-    city: regRole.value === 'executor' ? city : '',
+  const user = {
+    name, email, phone, role,
+    city: role === 'executor' ? city : '',
     salt,
     passwordHash: await hashPassword(pass, salt),
     registeredAt: new Date().toISOString()
-  });
-  saveUsers(users);
-  sessionStorage.setItem(SESSION_KEY, email);
-  applySession();
-  closeAuth();
-  showToast('Регистрация завершена. Добро пожаловать, ' + name + '!');
-});
-
-/* ================== Вход ================== */
-loginForm.addEventListener('submit', async e => {
-  e.preventDefault();
-  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pass = document.getElementById('loginPassword').value;
-  if (!isEmail(email)) return showFormError(loginForm, 'Введите корректный email.');
-  if (!pass) return showFormError(loginForm, 'Введите пароль.');
-
-  const user = getUsers().find(u => u.email === email);
-  if (!user) return showFormError(loginForm, 'Пользователь с таким email не найден. Зарегистрируйтесь.');
-  const hash = await hashPassword(pass, user.salt);
-  if (hash !== user.passwordHash) return showFormError(loginForm, 'Неверный пароль.');
+  };
+  users.push(user);
+  writeList(USERS_KEY, users);
 
   sessionStorage.setItem(SESSION_KEY, email);
-  applySession();
+  e.target.reset();
+  $('#rg-city-field').hidden = true;
   closeAuth();
-  showToast('Вы вошли как ' + user.name);
+  updateAuthUI();
+  toast(role === 'executor'
+    ? 'Регистрация исполнителя завершена. Модерация обычно занимает 1–2 дня.'
+    : 'Добро пожаловать, ' + name + '!');
 });
 
-/* ================== Выход ================== */
-function logout() {
-  sessionStorage.removeItem(SESSION_KEY);
-  applySession();
-  showToast('Вы вышли из аккаунта.');
-}
-
-/* ================== Купить ================== */
-document.querySelectorAll('.js-buy').forEach(btn =>
-  btn.addEventListener('click', () => {
-    if (!getCurrentUser()) {
-      openAuth('register');
-      showToast('Чтобы купить проект, войдите или зарегистрируйтесь.');
-      return;
-    }
-    showToast('Демо-режим: оплата проекта «' + btn.dataset.product + '» подключается на стороне сервера.');
-  })
-);
-
-/* ================== Заказ по эскизу ================== */
-const orderForm = document.getElementById('orderForm');
-orderForm.addEventListener('submit', e => {
+// ===== Вход =====
+$('#form-login').addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('orderName').value.trim();
-  const phone = document.getElementById('orderPhone').value.trim();
-  if (name.length < 2 || !isPhone(phone)) {
-    showToast('Заполните имя и корректный телефон.');
+  const err = $('#li-error');
+  err.hidden = true;
+
+  const email = $('#li-email').value.trim().toLowerCase();
+  const pass = $('#li-pass').value;
+  const user = readList(USERS_KEY).find(u => u.email === email);
+
+  if (!user) {
+    err.hidden = false;
+    err.innerHTML = 'Пользователь с таким email не найден. <button class="error-link" id="to-reg">Зарегистрируйтесь</button>';
+    $('#to-reg').addEventListener('click', () => {
+      switchTab('register');
+      $('#rg-email').value = email;
+    });
     return;
   }
-  const orders = (() => {
-    try { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; } catch { return []; }
-  })();
+  if (await hashPassword(pass, user.salt) !== user.passwordHash) {
+    err.hidden = false;
+    err.textContent = 'Неверный пароль.';
+    return;
+  }
+  sessionStorage.setItem(SESSION_KEY, email);
+  e.target.reset();
+  closeAuth();
+  updateAuthUI();
+  toast('Вы вошли как ' + user.name);
+});
+
+// ===== Отображение состояния в шапке =====
+function currentUser() {
+  const email = sessionStorage.getItem(SESSION_KEY);
+  return email ? readList(USERS_KEY).find(u => u.email === email) || null : null;
+}
+function updateAuthUI() {
+  const user = currentUser();
+  const chip = document.createElement('button');
+  chip.className = 'user-chip';
+  chip.textContent = user ? user.name + ' · выйти' : '';
+  chip.title = 'Нажмите, чтобы выйти';
+
+  const desktop = $('#link-login');
+  const mobile = $('#mobile-login');
+
+  if (user) {
+    chip.addEventListener('click', () => {
+      sessionStorage.removeItem(SESSION_KEY);
+      updateAuthUI();
+      toast('Вы вышли из аккаунта.');
+    });
+    desktop.replaceWith(chip); chip.id = 'link-login'; chip.removeAttribute('style');
+    mobile.textContent = 'Выйти';
+    mobile.removeAttribute('data-auth');
+    mobile.onclick = (e) => { e.preventDefault(); sessionStorage.removeItem(SESSION_KEY); updateAuthUI(); toast('Вы вышли из аккаунта.'); };
+  } else {
+    if (desktop.classList.contains('user-chip')) {
+      const link = document.createElement('a');
+      link.href = '#'; link.className = 'link-login'; link.id = 'link-login';
+      link.textContent = 'Войти'; link.dataset.auth = 'login';
+      link.addEventListener('click', (e) => { e.preventDefault(); openAuth('login'); });
+      desktop.replaceWith(link);
+    }
+    mobile.textContent = 'Войти';
+    mobile.setAttribute('data-auth', 'login');
+    mobile.onclick = (e) => { e.preventDefault(); openAuth('login'); };
+  }
+}
+
+// ===== Кнопки «Купить» =====
+const PRODUCTS = {
+  'kuhnya-3-0': 'Кухня «Прямая 3.0»',
+  'shkaf-2-4': 'Шкаф-купе «Модуль 2.4»',
+  'prihozaya-kompakt': 'Прихожая «Компакт»'
+};
+document.querySelectorAll('[data-product]').forEach(btn =>
+  btn.addEventListener('click', () => {
+    if (!currentUser()) {
+      toast('Сначала войдите или зарегистрируйтесь — покупка привязывается к аккаунту.');
+      openAuth('login');
+      return;
+    }
+    toast('Проект «' + (PRODUCTS[btn.dataset.product] || '') + '» добавлен. Здесь будет оплата.');
+  }));
+
+// ===== Форма заказа по эскизу =====
+$('#of-file').addEventListener('change', (e) => {
+  $('#file-name').textContent = e.target.files[0] ? ' — выбран: ' + e.target.files[0].name : '';
+});
+$('#order-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (!$('#of-name').value.trim() || !$('#of-phone').value.trim()) {
+    toast('Заполните имя и телефон.');
+    return;
+  }
+  if (!$('#of-consent').checked) {
+    toast('Нужно согласие на обработку персональных данных.');
+    return;
+  }
+  const orders = readList(ORDERS_KEY);
   orders.push({
-    name, phone,
-    material: document.getElementById('orderMaterial').value,
-    edge: document.getElementById('orderEdge').value,
-    hardware: document.getElementById('orderHardware').value.trim(),
-    notes: document.getElementById('orderNotes').value.trim(),
+    name: $('#of-name').value.trim(),
+    phone: $('#of-phone').value.trim(),
+    material: $('#of-material').value,
+    edge: $('#of-edge').value,
+    hardware: $('#of-hardware').value.trim(),
+    notes: $('#of-notes').value.trim(),
     createdAt: new Date().toISOString()
+    // Здесь позже добавим fetch('/api/orders', ...) для отправки на сервер
   });
-  localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
-  document.getElementById('orderSuccess').hidden = false;
-  orderForm.reset();
-  /* Здесь будет реальная отправка: fetch('/api/orders', { method: 'POST', body: JSON.stringify(order) }) */
+  writeList(ORDERS_KEY, orders);
+  e.target.reset();
+  $('#file-name').textContent = '';
+  $('#order-success').hidden = false;
 });
 
-/* ================== Единая обработка кликов ================== */
-document.addEventListener('click', e => {
-  const auth = e.target.closest('[data-auth]');
-  if (auth) { e.preventDefault(); openAuth(auth.dataset.auth); return; }
-  const out = e.target.closest('[data-logout]');
-  if (out) { e.preventDefault(); logout(); }
-});
-
-applySession();
+// ===== Инициализация =====
+updateAuthUI();
